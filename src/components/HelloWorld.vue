@@ -1,6 +1,8 @@
 <template>
-  <div class="hello">
+  <div class="hello container justify-content-center text-center">
+    <img src="../assets/logo.png">
     <h1>{{ msg }}</h1>
+    <span class="badge badge-pill badge-primary">Primary</span>
     <h2>Essential Links</h2>
     <ul>
       <li>

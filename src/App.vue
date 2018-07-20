@@ -1,8 +1,8 @@
 <template>
-  <div id="app">
+  <!-- <div id="app">
     <img src="./assets/logo.png">
-    <router-view/>
-  </div>
+</div> -->
+   <router-view/>
 </template>
 
 <script>
@@ -11,13 +11,19 @@ export default {
 }
 </script>
 
+<!--
 <style>
-#app {
+/* #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-}
+} *
+</style> -->
+
+<style lang="scss">
+@import './assets/styles/custom-bootstrap.scss';
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
 </style>
