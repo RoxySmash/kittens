@@ -1,6 +1,10 @@
 // Import fonts
 @import url('https://fonts.googleapis.com/css?family=Raleway');
 
+body {
+  background-image: url('./assets/img/background.jpg');
+
+}
 // Override / set color variables
 $white: #fff;
 $black: #000;
@@ -9,7 +13,6 @@ $blue: #3399ff;
 $orange: #f26c22;
 $yellow: #ffd925;
 $red: #e5001e;
-
 
 // Set brand colors
 $primary: $blue;
