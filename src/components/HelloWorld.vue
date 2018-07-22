@@ -16,21 +16,27 @@
               <div class="col-md-10 offset-sm-1">
                 <div class="row">
                   <div class="col-md-4 offset-sm-4 text-center">
+                    <!-- Card start -->
                     <div class="card shadow-sm p-3 mb-5 bg-white rounded">
                       <vue-swing @throwout="onThrowout" :config="config" ref="vueswing">
                         <div class="card-body cat-info" v-for="item in info" :key="item.id">
                           <img class="card-img-top cat-img" v-bind:src="item.images[0]" alt="Cat">
-                          <h5 class="card-title">{{ item.name }}</h5>
-                          <p class="card-text">{{ item.bio }}</p>
+                          <h5 class="card-title mt-2">{{ item.name }}</h5>
+                          <p class="card-text mb-2">Hobbies: {{ item.bio }}</p>
                         </div>
                       </vue-swing>
+                      
                       <div class="card-body actions text-center">
+                        <div class="card-text font-weight-bold text-success">
+                          <span v-if="matched">It's a match!</span>
+                          <span v-if="loved">Soulmates!</span>
+                        </div>
                         <div class="row justify-content-around">
                           <div class="col-4">
                             <button @click="dislike" type="button" class="btn btn-primary">Dislike</button>
                           </div>
                           <div class="col-4">
-                            <button type="button" class="btn btn-primary">Love</button>
+                            <button @click="love" type="button" class="btn btn-primary">Love</button>
                           </div>
                           <div class="col-4">
                             <button @click="like" type="button" class="btn btn-primary">Like</button>
@@ -38,6 +44,7 @@
                         </div>
                       </div>
                     </div>
+                    <!-- Card end -->
                   </div>
                 </div>
               </div>
@@ -70,6 +77,7 @@
         loading: true,
         errored: false,
         matched: false,
+        loved: false,
         config: {
           allowedDirections: [
             VueSwing.Direction.UP,
@@ -80,33 +88,60 @@
           minThrowOutDistance: 250,
           maxThrowOutDistance: 300
         },
-        info: []
+        info: [],
       }
     },
     methods: {
-      add() {
-        // this.cards.push(`${this.cards.length}`)
-      },
       dislike() {
         const cards = this.$refs.vueswing.cards
         cards[cards.length - 1].throwOut(-1, 0)
         setTimeout(() => {
           this.info.pop()
         }, 150)
+         console.log(`Disliked ${target.textContent}!`)
       },
       like() {
-  
         const cards = this.$refs.vueswing.cards
-        cards[cards.length - 1].throwOut(1, 0)
-        setTimeout(() => {
+        const index = cards.length - 1
+        if (this.info[index].likesYou == false) {
+          cards[cards.length - 1].throwOut(1, 0)
+          setTimeout(() => {
+            this.info.pop()
+          }, 100)
+          console.log(`Liked ${this.info[index].name}!`)
+      }
+        else {
+          if (this.matched){
+          this.matched = false 
+          cards[cards.length - 1].throwOut(1, 0)
+          setTimeout(() => {
           this.info.pop()
-        }, 100)
+          }, 100)
+          console.log(this.matched)
+         }
+          else {
+          this.matched = true
+          console.log(`Matched ${this.info[index].name}!`)
+         }          
+        }
+      },
+      love(){
+        this.loved = true
+        this.matched = true
+        const cards = this.$refs.vueswing.cards
+        const index = cards.length - 1
+        cards[cards.length - 1].throwOut(1, 0)
+          setTimeout(() => {
+          this.info.pop()
+          }, 100)
+        console.log(`Loved ${this.info[index].name}!`)
       },
       onThrowout({
         target,
         throwDirection
       }) {
-        console.log(`Threw out ${target.textContent}!`)
+        this.matched = false
+        console.log(`Didn't match ${target.textContent}!`)
       }
     },
   
@@ -133,12 +168,18 @@
 .actions {
   position: absolute;
   z-index: 999;
-  padding-top: 23rem;
+  padding-top: 27rem;
 }
 
+.cat-img {
+  width: 14rem;
+  height: 15rem;
+  object-fit: cover;
+  /* object-fit: cover; */
+}
 .card {
   width: 18rem;
-  height: 30rem;
+  height: 32rem;
 }
 
 .cat-info {
