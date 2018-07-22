@@ -1,13 +1,6 @@
 <template>
   <div id="app">
     <div class="container">
-      <!-- Condition for displaying error message-->
-      <section class="text-center mt-5" v-if="errored">
-        <h2>
-          <p>Oh noes! </p>
-        </h2> <br/> The kittens must be having a nap because we can't find any! <br/>
-        <p>Please try again in a bit or navigate here</p>
-      </section>
       <!-- Kitten card section -->
       <section class="kitten-card mt-5">
         <div class="row">
@@ -18,6 +11,15 @@
                   <div class="col-md-4 offset-sm-4 text-center">
                     <!-- Card start -->
                     <div class="card shadow-sm p-3 mb-5 bg-white rounded">
+                       <!-- Condition for displaying error message-->
+                      <div class="card-body text-center mt-5" v-if="errored">
+                        <h2>
+                          <p>Oh noes! </p>
+                        </h2> <br/> The kittens must be having a nap because we can't find any! <br/><br/>
+                        <p>Please try again in a bit or get your meow fix 
+                          <a href="https://www.reddit.com/r/CatGifs/" class="text-primary" target="_blank">HERE!</a>
+                        </p>
+                      </div>
                       <vue-swing @throwout="onThrowout" :config="config" ref="vueswing">
                         <div class="card-body cat-info" v-for="item in info" :key="item.id">
                           <img class="card-img-top cat-img" v-bind:src="item.images[0]" alt="Cat">
@@ -25,8 +27,7 @@
                           <p class="card-text mb-2">Hobbies: {{ item.bio }}</p>
                         </div>
                       </vue-swing>
-                      
-                      <div class="card-body actions text-center">
+                      <div class="card-body actions text-center" v-if="!errored">
                         <div class="card-text font-weight-bold text-success">
                           <span v-if="matched">It's a match!</span>
                           <span v-if="loved">Soulmates!</span>
@@ -77,7 +78,7 @@
         loading: true,
         errored: false,
         matched: false,
-        loved: false,
+        loved: false,  //sad face
         config: {
           allowedDirections: [
             VueSwing.Direction.UP,
@@ -109,37 +110,38 @@
             this.info.pop()
           }, 100)
           console.log(`Liked ${this.info[index].name}!`)
-      }
+        }
         else {
-          if (this.matched){
-          this.matched = false 
-          cards[cards.length - 1].throwOut(1, 0)
-          setTimeout(() => {
-          this.info.pop()
-          }, 100)
-          console.log(this.matched)
-         }
-          else {
           this.matched = true
-          console.log(`Matched ${this.info[index].name}!`)
-         }          
+          setTimeout (() => {
+            this.matched = false 
+            cards[cards.length - 1].throwOut(1, 0)
+            setTimeout(() => {
+            this.info.pop()
+            }, 100)      
+          }, 1000)
+            console.log(`Matched ${this.info[index].name}!`)
         }
       },
       love(){
+        // When superliked or loved, always count as a match
         this.loved = true
         this.matched = true
-        const cards = this.$refs.vueswing.cards
-        const index = cards.length - 1
-        cards[cards.length - 1].throwOut(1, 0)
+        setTimeout (() => {
+          const cards = this.$refs.vueswing.cards
+          const index = cards.length - 1
+          cards[cards.length - 1].throwOut(1, 0)
           setTimeout(() => {
-          this.info.pop()
-          }, 100)
-        console.log(`Loved ${this.info[index].name}!`)
+            this.info.pop()
+            }, 100)
+          console.log(`Loved ${this.info[index].name}!`)
+        }, 1000)
       },
       onThrowout({
         target,
         throwDirection
       }) {
+        this.loved = false
         this.matched = false
         console.log(`Didn't match ${target.textContent}!`)
       }
@@ -148,8 +150,8 @@
     // Retrieve data and assign it using the 'mounted' lifecycle hook
     mounted() {
       axios
-        .get("http://my-json-server.typicode.com/airtame/kittens/kittens")
-        //.get("http://my-json-server.typicode.com")
+        //.get("http://my-json-server.typicode.com/airtame/kittens/kittens")
+        .get("http://my-json-server.typicode.com")
         .then(response => {
           this.info = response.data
         })
@@ -168,7 +170,7 @@
 .actions {
   position: absolute;
   z-index: 999;
-  padding-top: 27rem;
+  margin-top: 27rem;
 }
 
 .cat-img {
