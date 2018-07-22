@@ -16,18 +16,21 @@
               <div class="col-md-10 offset-sm-1">
                 <div class="row">
                   <div class="col-md-4 offset-sm-4 text-center">
-                    <div class="card shadow-sm p-3 mb-5 bg-white rounded" v-for="item in info" :key="item.id" style="width: 18rem;">
+                    <div class="cat card shadow-sm p-3 mb-5 bg-white rounded" v-for="item in info" :key="item.id" style="width: 18rem;">
                       <img class="card-img-top" v-bind:src="item.images[0]" alt="Cat">
                       <div class="card-body">
                         <h5 class="card-title">{{ item.name }}</h5>
                         <p class="card-text">{{ item.bio }}</p>
                       </div>
-                      <ul class="list-group list-group-flush">
-                        <!-- <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li> -->
-                      </ul>
+                      <!-- <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Cras justo odio</li>
+                                    <li class="list-group-item">Dapibus ac facilisis in</li> 
+                              </ul> -->
                       <div class="card-body">
-                        <a href="#" class="card-link">Dislike</a>
+                        <button @click="add">Like</button>
+                        <button @click="remove">Dislike</button>
+                        <button @click="swing">Swing card</button>
+                        <p id="dislike" class="card-link liked-link">Dislike</p>
                         <a href="#" class="card-link">Superlike</a>
                         <a href="#" class="card-link">Like</a>
                       </div>
@@ -40,16 +43,13 @@
         </div>
       </section>
       <!-- End of kitten card section -->
-  
     </div>
-    <!-- <button @click="add">Like</button>
-      <button @click="remove">Dislike</button>
-      <button @click="swing">Swing card</button>
-      <vue-swing @throwout="onThrowout" :config="config" ref="vueswing">
-        <div v-for="item in info" :key="item" class="card2">
-          <span v-bind:src="item.images[0]"></span>
-        </div>
-      </vue-swing> -->
+  
+    <vue-swing @throwout="onThrowout" :config="config" ref="vueswing">
+      <div v-for="item in info" :key="item" class="card2  ">
+        <span v-bind:src="item.images[0]"></span>
+      </div>
+    </vue-swing>
   </div>
 </template>
 
@@ -62,43 +62,48 @@
   export default {
     name: "app",
   
-    //    components: { VueSwing },
-    // data2 () {
-    //   return {
-    //     config: {
-    //       allowedDirections: [
-    //         VueSwing.Direction.UP,
-    //         VueSwing.Direction.DOWN,
-    //         VueSwing.Direction.LEFT,
-    //         VueSwing.Direction.RIGHT
-    //       ],
-    //       minThrowOutDistance: 500,
-    //       maxThrowOutDistance: 800
-    //     },
-    //     cards: ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
-    //   }
-    // },
-    // methods: {
-    //   add () {
-    //     this.cards.push(`${this.cards.length}`)
-    //   },
-    //   remove () {
-    //     this.swing()
-    //     setTimeout(() => {
-    //       this.cards.pop()
-    //     }, 100)
-    //   },
-    //   swing () {
-    //     const cards = this.$refs.vueswing.cards
-    //     cards[cards.length - 1].throwOut(
-    //       Math.random() * 100 - 50,
-    //       Math.random() * 100 - 50
-    //     )
-    //   },
-    //   onThrowout ({ target, throwDirection }) {
-    //     console.log(`Threw out ${target.textContent}!`)
-    //   }
-    // },
+    components: {
+      VueSwing
+    },
+    data2() {
+      return {
+        config: {
+          allowedDirections: [
+            VueSwing.Direction.UP,
+            VueSwing.Direction.DOWN,
+            VueSwing.Direction.LEFT,
+            VueSwing.Direction.RIGHT
+          ],
+          minThrowOutDistance: 500,
+          maxThrowOutDistance: 800
+        },
+        cards: ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
+      }
+    },
+    methods: {
+      add() {
+        this.cards.push(`${this.cards.length}`)
+      },
+      remove() {
+        this.swing()
+        setTimeout(() => {
+          this.cards.pop()
+        }, 100)
+      },
+      swing() {
+        const cards = this.$refs.vueswing.cards
+        cards[cards.length - 1].throwOut(
+          Math.random() * 100 - 50,
+          Math.random() * 100 - 50
+        )
+      },
+      onThrowout({
+        target,
+        throwDirection
+      }) {
+        console.log(`Threw out ${target.textContent}!`)
+      }
+    },
     //Create data property for our info
     data() {
       return {
@@ -124,17 +129,10 @@
   
     }
   };
-  
-  $(document).ready(function() {
-    console.log('jquery works');
-  });
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-/* body {
-  background-image: url('./assets/img/background.jpg');
-} */
 .card2 {
   align-items: center;
   background-color: #fff;
