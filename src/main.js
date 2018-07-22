@@ -3,6 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+// import axios from 'axios'
+// import VueSwing from 'vue-swing'
+
+// Vue.component('vue-swing', VueSwing)
 
 Vue.config.productionTip = false
 
@@ -10,6 +14,8 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
-  components: { App },
+  // axios,
+  // components: {App, VueSwing},
+  components: {App},
   template: '<App/>'
 })
