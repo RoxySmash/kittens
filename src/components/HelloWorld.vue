@@ -16,20 +16,28 @@
               <div class="col-md-10 offset-sm-1">
                 <div class="row">
                   <div class="col-md-4 offset-sm-4 text-center">
-                    <button @click="dislike" type="button" class="btn btn-primary">Dislike</button>
-                    <!-- <button @click="match" type="button" class="btn btn-outline-primary">Superlike</button> -->
-                    <button @click="like" type="button" class="btn btn-primary">Like</button>
-                    <vue-swing @throwout="onThrowout" :config="config" ref="vueswing">
-                      <div class="card shadow-sm p-3 mb-5 bg-white rounded" v-for="card in info" :key="card.id" style="width: 18rem;">
-                        <img class="card-img-top" v-bind:src="card.images[0]" alt="Cat">
-                        <div class="card-body">
-                          <!-- <h5 class="card-title">{{ item.name }}</h5>
-                              <p class="card-text">{{ item.bio }}</p> -->
+                    <div class="card shadow-sm p-3 mb-5 bg-white rounded">
+                      <vue-swing @throwout="onThrowout" :config="config" ref="vueswing">
+                        <div class="card-body cat-info" v-for="item in info" :key="item.id">
+                          <img class="card-img-top cat-img" v-bind:src="item.images[0]" alt="Cat">
+                          <h5 class="card-title">{{ item.name }}</h5>
+                          <p class="card-text">{{ item.bio }}</p>
                         </div>
-                        <div class="card-body">
+                      </vue-swing>
+                      <div class="card-body actions text-center">
+                        <div class="row justify-content-around">
+                          <div class="col-4">
+                            <button @click="dislike" type="button" class="btn btn-primary">Dislike</button>
+                          </div>
+                          <div class="col-4">
+                            <button type="button" class="btn btn-primary">Love</button>
+                          </div>
+                          <div class="col-4">
+                            <button @click="like" type="button" class="btn btn-primary">Like</button>
+                          </div>
                         </div>
                       </div>
-                    </vue-swing>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -54,13 +62,14 @@
     components: {
       VueSwing
     },
-    
+  
     //Create data property for our info
     data() {
       return {
         info: null,
         loading: true,
         errored: false,
+        matched: false,
         config: {
           allowedDirections: [
             VueSwing.Direction.UP,
@@ -86,6 +95,7 @@
         }, 150)
       },
       like() {
+  
         const cards = this.$refs.vueswing.cards
         cards[cards.length - 1].throwOut(1, 0)
         setTimeout(() => {
@@ -99,7 +109,7 @@
         console.log(`Threw out ${target.textContent}!`)
       }
     },
-      
+  
     // Retrieve data and assign it using the 'mounted' lifecycle hook
     mounted() {
       axios
@@ -113,25 +123,26 @@
           console.log(error, 'Cannot retrieve data, initiate panic mode!')
           this.errored = true
         })
-        .finally(() => this.loading = false)  
+        .finally(() => this.loading = false)
     }
   };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.card {
+.actions {
   position: absolute;
-  /* align-items: center;
-      background-color: #fff;
-      border-radius: 20px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      display: flex;
-      font-size: 72px;
-      height: 200px;
-      justify-content: center;
-      left: calc(50% - 100px);
-      top: calc(50% - 100px);
-      width: 200px; */
+  z-index: 999;
+  padding-top: 23rem;
+}
+
+.card {
+  width: 18rem;
+  height: 30rem;
+}
+
+.cat-info {
+  background-color: white;
+  position: absolute;
 }
 </style>
