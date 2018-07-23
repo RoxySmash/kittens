@@ -3,8 +3,8 @@
 
 body {
   background-image: url('./assets/img/background.jpg');
-
 }
+
 // Override / set color variables
 $white: #fff;
 $black: #000;
@@ -20,3 +20,34 @@ $success: $green;
 $info: $yellow;
 $warning: $orange;
 $danger: $red;
+
+// Elements
+.action-icons {
+* > .fa.fa-hover-show,
+*:hover > .far.fa-hover-hidden {
+  display: none;
+}
+*:hover > .fa.fa-hover-show {
+  display: inline-block;
+}
+  i:hover {
+    cursor: pointer;
+  }
+}
+i.icon-dislike:hover {
+  color: $danger;
+}
+i.icon-like:hover {
+  color: $primary;
+}
+i.icon-love {
+  line-height: 1rem;
+  &:hover {
+    color: $success;
+  }
+}
+
+// Utility
+.clickable {
+  cursor: pointer;
+}

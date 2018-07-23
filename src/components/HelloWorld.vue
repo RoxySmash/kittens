@@ -2,7 +2,7 @@
   <div id="app">
     <div class="container">
       <!-- Kitten card section -->
-      <section class="kitten-card mt-5">
+      <section class="mt-5">
         <div class="row">
           <div class="col-md-10 offset-sm-1">
             <div class="row">
@@ -10,7 +10,7 @@
                 <div class="row">
                   <div class="col-md-4 offset-sm-4 text-center">
                     <!-- Card start -->
-                    <div class="card shadow-sm p-3 mb-5 bg-white rounded">
+                    <div class="card cat-card shadow p-3 mb-5 bg-white rounded">
                        <!-- Condition for displaying error message-->
                       <div class="card-body text-center mt-5" v-if="errored">
                         <h2>
@@ -21,6 +21,7 @@
                         </p>
                       </div>
                       <vue-swing @throwout="onThrowout" :config="config" ref="vueswing">
+                        <!-- <span v-if="!info.length">OUT OF CATS</span> -->
                         <div class="card-body cat-info" v-for="item in info" :key="item.id">
                           <img class="card-img-top cat-img" v-bind:src="item.images[0]" alt="Cat">
                           <h5 class="card-title mt-2">{{ item.name }}</h5>
@@ -28,19 +29,22 @@
                         </div>
                       </vue-swing>
                       <div class="card-body actions text-center" v-if="!errored">
-                        <div class="card-text font-weight-bold text-success">
-                          <span v-if="matched">It's a match!</span>
-                          <span v-if="loved">Soulmates!</span>
+                        <div class="card-text">
+                          <span v-if="matched" class="font-weight-bold text-success">It's a match!</span>
+                          <span v-if="loved" class="font-weight-bold text-success">Soulmates!</span>
+                          <span v-else> &nbsp; </span>
                         </div>
-                        <div class="row justify-content-around">
-                          <div class="col-4">
-                            <button @click="dislike" type="button" class="btn btn-primary">Dislike</button>
+                        <div class="row justify-content-around action-icons mt-4">
+                          <div class="col-3">
+                            <i @click="dislike" class="fas fa-times fa-2x icon-dislike"></i>
                           </div>
-                          <div class="col-4">
-                            <button @click="love" type="button" class="btn btn-primary">Love</button>
+                          <div class="col-6">
+                            <i class="far fa-star fa-hover-hidden fa-3x icon-love"></i>
+                            <i @click="love" class="fa fa-star fa-hover-show fa-3x icon-love"></i>
                           </div>
-                          <div class="col-4">
-                            <button @click="like" type="button" class="btn btn-primary">Like</button>
+                          <div class="col-3">
+                            <i class="far fa-heart fa-hover-hidden fa-2x icon-like"></i>
+                            <i @click="like" class="fa fa-heart fa-hover-show fa-2x icon-like"></i>
                           </div>
                         </div>
                       </div>
@@ -63,7 +67,6 @@
   import axios from 'axios';
   import VueSwing from 'vue-swing';
   
-  //Vue.component('vue-swing', VueSwing)
   export default {
     name: "app",
   
@@ -150,8 +153,9 @@
     // Retrieve data and assign it using the 'mounted' lifecycle hook
     mounted() {
       axios
-        //.get("http://my-json-server.typicode.com/airtame/kittens/kittens")
-        .get("http://my-json-server.typicode.com")
+        .get("http://my-json-server.typicode.com/airtame/kittens/kittens")
+        // For testing error:
+        // .get("http://my-json-server.typicode.com") 
         .then(response => {
           this.info = response.data
         })
@@ -168,24 +172,24 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .actions {
+  width: 16rem;
   position: absolute;
   z-index: 999;
-  margin-top: 27rem;
+  margin-top: 25rem;
 }
 
 .cat-img {
   width: 14rem;
   height: 15rem;
   object-fit: cover;
-  /* object-fit: cover; */
 }
-.card {
+.cat-card {
   width: 18rem;
-  height: 32rem;
+  height: 34rem;
 }
 
 .cat-info {
-  background-color: white;
+  background-color: #fff;
   position: absolute;
 }
 </style>
