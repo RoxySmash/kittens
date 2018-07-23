@@ -11,20 +11,25 @@
                   <div class="col-md-4 offset-sm-4 text-center">
                     <!-- Card start -->
                     <div class="card cat-card shadow p-3 mb-5 bg-white rounded">
+                        <div v-if="loading" class="spinner">
+                          <div class="bounce1"></div>
+                          <div class="bounce2"></div>
+                          <div class="bounce3"></div>
+                        </div>
                         <div class="row justify-content-between v-middle-align">
                           <div class="col-6">
-                         <img class="card-img-top kittens-logo" src="../assets/img/kittens-logo.jpg" alt="Card image cap">
+                         <img v-if="!loading" class="card-img-top kittens-logo" src="../assets/img/kittens-logo.jpg" alt="Card image cap">
                           </div>
                           <div class="col-6">
-                           <img class="card-img-top profile-pic float-right" src="../assets/img/profile-pic.jpg" alt="Card image cap">
+                           <img v-if="!loading" class="card-img-top profile-pic float-right" src="../assets/img/profile-pic.jpg" alt="Card image cap">
                           </div>
                         </div>
                        <!-- Condition for displaying error message-->
-                       <span v-if="!info.length" class="card-text text-warning text-uppercase mt-5">
+                       <span v-if="!loading && !info.length" class="card-text text-warning text-uppercase mt-5">
                          <h2>
-                           out of cats! <br/>
+                           out of cats! <br/> <br/>
                          </h2>
-                        But there's more right   
+                        But wait, there's more right   
                         <a href="https://www.reddit.com/r/CatGifs/" class="text-primary text-uppercase" target="_blank">here!</a>
                         </span>
                       <div class="card-body text-center mt-5" v-if="errored">
@@ -37,13 +42,11 @@
                       </div>
                       <vue-swing @throwout="onThrowout" :config="config" ref="vueswing">
                         <div class="card-body cat-info pt-1 px-0"  v-for="item in info" :key="item.id">
-                        
-                      
-                          <img class="card-img-top cat-img pr-3" v-bind:src="item.images[0]" alt="Cat">
-                            <div class="card-body pl-1">
-                            <h5 class="card-title mt-2">{{ item.name }}</h5>
-                            <small class="card-text mb-2">Hobbies: {{ item.bio }}</small>
-                            </div>
+                        <img class="card-img-top cat-img pr-3" v-bind:src="item.images[0]" alt="Cat">
+                          <div class="card-body pl-1">
+                          <h5 class="card-title mt-2">{{ item.name }}</h5>
+                          <small class="card-text mb-2">Hobbies: {{ item.bio }}</small>
+                          </div>
                         </div>
                       </vue-swing>
 
