@@ -2,8 +2,10 @@
 @import url('https://fonts.googleapis.com/css?family=Ubuntu');
 
 body {
-  background-image: url('./assets/img/background.jpg');
+  background-image: url('./assets/img/background-alpha.jpg');
 }
+// Identity color variables
+$orange-red: #ff3300;
 
 // Override / set color variables
 $white: #fff;
@@ -48,6 +50,13 @@ i.icon-love {
 }
 
 // Utility
+
+.v-middle-align {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 .clickable {
   cursor: pointer;
 }
