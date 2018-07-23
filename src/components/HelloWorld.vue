@@ -20,6 +20,13 @@
                           </div>
                         </div>
                        <!-- Condition for displaying error message-->
+                       <span v-if="!info.length" class="card-text text-warning text-uppercase mt-5">
+                         <h2>
+                           out of cats! <br/>
+                         </h2>
+                        But there's more right   
+                        <a href="https://www.reddit.com/r/CatGifs/" class="text-primary text-uppercase" target="_blank">here!</a>
+                        </span>
                       <div class="card-body text-center mt-5" v-if="errored">
                         <h2>
                           <p>Oh noes! </p>
@@ -29,11 +36,8 @@
                         </p>
                       </div>
                       <vue-swing @throwout="onThrowout" :config="config" ref="vueswing">
-                        <div class="card-body cat-info pt-1 px-0" v-for="item in info" :key="item.id">
-                        <!-- <span v-if="!info.length" class="card-text text-warning text-uppercase">out of cats!<br/>
-                        But there's more right   
-                        <a href="https://www.reddit.com/r/CatGifs/" class="text-primary text-uppercase" target="_blank">here!</a>
-                        </span> -->
+                        <div class="card-body cat-info pt-1 px-0"  v-for="item in info" :key="item.id">
+                        
                       
                           <img class="card-img-top cat-img pr-3" v-bind:src="item.images[0]" alt="Cat">
                             <div class="card-body pl-1">
@@ -43,7 +47,7 @@
                         </div>
                       </vue-swing>
 
-                      <div class="card-body actions text-center" v-if="!errored">
+                      <div class="card-body actions text-center" v-if="!errored && info.length">
                         <div class="card-text">
                           <span v-if="matched" class="font-weight-bold text-success">It's a match!</span>
                           <span v-if="loved" class="font-weight-bold text-success">Soulmates!</span>
